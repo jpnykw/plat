@@ -1,0 +1,7 @@
+fun fib(depth)
+    if depth < 3 then
+        1
+    else
+        fib(depth-1)+fib(depth-2)
+
+fib(40)
