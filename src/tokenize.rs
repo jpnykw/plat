@@ -37,8 +37,8 @@ pub fn get (
         };
         // Found
         if res == "Ok".to_string() {
-            while true {
-                let text = &code.chars().nth(index).expect("Failed to unwrap chars").to_string();
+            loop {
+                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at method)").to_string();
                 let reg = Regex::new(r"(\d|[a-zA-Z])+").expect("Failed to create REGEX");
                 let res = match reg.captures(text) {
                     Some(_) => "Ok".to_string(),
@@ -65,8 +65,8 @@ pub fn get (
         };
         // Found
         if res == "Ok".to_string() {
-            while true {
-                let text = &code.chars().nth(index).expect("Failed to unwrap chars").to_string();
+            loop {
+                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at num)").to_string();
                 let reg = Regex::new(r"(\.)?\d+").expect("Failed to create REGEX");
                 let res = match reg.captures(&text.to_string()) {
                     Some(_) => "Ok".to_string(),
