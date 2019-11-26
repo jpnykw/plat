@@ -1,0 +1,17 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/rust
+
+    steps:
+      - checkout
+
+      - run:
+          name: rustup version
+          command: rustup --version
+
+      - run:
+          name: cargo build
+          command: cargo build --release
+
