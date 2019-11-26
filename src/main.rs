@@ -14,7 +14,12 @@ fn main() {
 
     // Tokenize
     let mut index: usize = 0;
-    let token: i64 = tokenize::get(code, index);
-    println!("token: {}", token);
+    for i in 0..10 {
+        println!();
+        let token = tokenize::get(&code, index);
+        println!("  token: {}", token[0]);
+        println!("  index: {}", token[1]);
+        index = token[1] as usize;
+    }
 }
 
