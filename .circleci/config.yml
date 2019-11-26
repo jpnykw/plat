@@ -8,10 +8,10 @@ jobs:
       - checkout
 
       - run:
-          name: rustup version
-          command: rustup --version
+          name: Test
+          command: cargo test
 
       - run:
-          name: cargo build
+          name: Build
           command: cargo build --release
 
