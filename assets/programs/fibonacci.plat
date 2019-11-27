@@ -4,4 +4,5 @@ fun fib(depth)
     else
         fib(depth-1)+fib(depth-2)
 
+# Calculate 40th fibonacci number
 fib(40)
