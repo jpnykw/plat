@@ -7,6 +7,8 @@ jobs:
     steps:
       - checkout
 
+      - run: brew install llvm@7 && export PATH="/usr/local/opt/llvm@7/bin:$PATH"
+
       - run:
           name: Test
           command: cargo test
