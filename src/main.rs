@@ -31,41 +31,53 @@ fn main() {
 
     println!();
     println!("\x1b[31mAll token was displayed.\x1b[m");
-    println!("token buffer -> {:?}", token_buffer);
+    println!("\ntoken buffer -> {:?}", token_buffer);
     // println!("llvmir -> {:?}", llvmir::main());
-}
 
-
-#[test]
-fn token_m4() {
-    let res = lexer::get(&String::from("# hoge\n"), 0);
-    assert_eq!(-4, res[0]);
+    // test
+    let ast = ast::get();
+    println!("\nast -> {:#?}", ast);
 }
 
 #[test]
-fn token_m3() {
-    let res = lexer::get(&String::from("ext hoge"), 0);
-    assert_eq!(-3, res[0]);
+fn token_if() {
+    let res = lexer::get(&String::from("if true"), 0);
+    assert_eq!(-1, res[0]);
 }
 
 #[test]
-fn token_m2() {
-    let res = lexer::get(&String::from("fun hoge"), 0);
+fn token_for() {
+    let res = lexer::get(&String::from("for i<1"), 0);
     assert_eq!(-2, res[0]);
 }
 
 #[test]
-fn token_p1() {
-    let mut res = lexer::get(&String::from("1+2\n"), 1);
-    assert_eq!(1, res[0]);
+fn token_fun() {
+    let res = lexer::get(&String::from("fun hoge"), 0);
+    assert_eq!(-3, res[0]);
+}
 
-    res = lexer::get(&String::from("1-2\n"), 1);
-    assert_eq!(1, res[0]);
+#[test]
+fn token_print() {
+    let res = lexer::get(&String::from("print()"), 0);
+    assert_eq!(-4, res[0]);
+}
 
-    res = lexer::get(&String::from("1*2\n"), 1);
-    assert_eq!(1, res[0]);
+#[test]
+fn i_token_string() {
+    let res = lexer::get(&String::from("\"hoge\""), 0);
+    assert_eq!(-4, res[0]);
+}
 
-    res = lexer::get(&String::from("1/2\n"), 1);
-    assert_eq!(1, res[0]);
+#[test]
+fn i_token_number() {
+    let res = lexer::get(&String::from("10\n"), 0);
+    assert_eq!(-5, res[0]);
+}
+
+#[test]
+fn i_token_comment() {
+    let res = lexer::get(&String::from("# hoge\n"), 0);
+    assert_eq!(-6, res[0]);
 }
 
