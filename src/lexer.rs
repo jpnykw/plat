@@ -105,7 +105,8 @@ pub fn get (
         }
     }
 
+    // Operators and Others
     println!("\x1b[36mType::Unknown:\x1b[m \x1b[32m{}\x1b[m", code.chars().nth(index).expect("Failed to unwrap chars (at Unknown)"));
-    [0, (index + 1) as i64]
+    [1, (index + 1) as i64]
 }
 

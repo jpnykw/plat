@@ -35,10 +35,11 @@ fn main() {
     // println!("llvmir -> {:?}", llvmir::main());
 }
 
+
 #[test]
-fn token_m2() {
-    let res = lexer::get(&String::from("fun hoge"), 0);
-    assert_eq!(-2, res[0]);
+fn token_m4() {
+    let res = lexer::get(&String::from("# hoge\n"), 0);
+    assert_eq!(-4, res[0]);
 }
 
 #[test]
@@ -48,7 +49,23 @@ fn token_m3() {
 }
 
 #[test]
-fn token_m4() {
-    let res = lexer::get(&String::from("# hoge\n"), 0);
-    assert_eq!(-4, res[0]);
+fn token_m2() {
+    let res = lexer::get(&String::from("fun hoge"), 0);
+    assert_eq!(-2, res[0]);
 }
+
+#[test]
+fn token_p1() {
+    let mut res = lexer::get(&String::from("1+2\n"), 1);
+    assert_eq!(1, res[0]);
+
+    res = lexer::get(&String::from("1-2\n"), 1);
+    assert_eq!(1, res[0]);
+
+    res = lexer::get(&String::from("1*2\n"), 1);
+    assert_eq!(1, res[0]);
+
+    res = lexer::get(&String::from("1/2\n"), 1);
+    assert_eq!(1, res[0]);
+}
+
