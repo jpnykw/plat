@@ -7,7 +7,13 @@ jobs:
     steps:
       - checkout
 
-      - run: brew install llvm@7 && export PATH="/usr/local/opt/llvm@7/bin:$PATH"
+      - run:
+          name: Install homebrew
+          command: /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+      - run:
+          name: Install LLVM-7
+          command: brew install llvm@7 && export PATH="/usr/local/opt/llvm@7/bin:$PATH"
 
       - run:
           name: Test
