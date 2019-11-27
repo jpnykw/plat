@@ -40,3 +40,9 @@ fn token_m3() {
     let res = tokenize::get(&String::from("ext hoge"), 0);
     assert_eq!(-3, res[0]);
 }
+
+#[test]
+fn token_m4() {
+    let res = tokenize::get(&String::from("# hoge\n"), 0);
+    assert_eq!(-4, res[0]);
+}
