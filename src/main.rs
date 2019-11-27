@@ -37,18 +37,18 @@ fn main() {
 
 #[test]
 fn token_m2() {
-    let res = tokenize::get(&String::from("fun hoge"), 0);
+    let res = lexer::get(&String::from("fun hoge"), 0);
     assert_eq!(-2, res[0]);
 }
 
 #[test]
 fn token_m3() {
-    let res = tokenize::get(&String::from("ext hoge"), 0);
+    let res = lexer::get(&String::from("ext hoge"), 0);
     assert_eq!(-3, res[0]);
 }
 
 #[test]
 fn token_m4() {
-    let res = tokenize::get(&String::from("# hoge\n"), 0);
+    let res = lexer::get(&String::from("# hoge\n"), 0);
     assert_eq!(-4, res[0]);
 }
