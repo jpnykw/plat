@@ -5,6 +5,7 @@ use std::fs::File;
 use std::io::prelude::*;
 
 mod tokenize;
+mod llvmir;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -15,7 +16,6 @@ fn main() {
 
     // Tokenize
     let mut index: usize = 0;
-    // for i in 0..21 {
     loop {
         let token = tokenize::get(&code, index);
         println!("  -> token: {}, index: {}", token[0], token[1]);
