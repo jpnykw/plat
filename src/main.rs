@@ -4,8 +4,9 @@ use std::env;
 use std::fs::File;
 use std::io::prelude::*;
 
-mod tokenize;
-mod llvmir;
+mod ast;
+mod lexer;
+// mod llvmir;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -14,19 +15,24 @@ fn main() {
     file.read_to_string(&mut code).unwrap();
     code = format!("{}\n", code).to_string();
 
-    // Tokenize
+    let mut token_buffer: Vec<[i64; 2]> = Vec::with_capacity(255);
     let mut index: usize = 0;
     loop {
-        let token = tokenize::get(&code, index);
+        let token = lexer::get(&code, index);
         println!("  -> token: {}, index: {}", token[0], token[1]);
         index = token[1] as usize;
 
         if index >= code.len() {
             break;
+        } else {
+            token_buffer.push(token);
         }
     }
 
+    println!();
     println!("\x1b[31mAll token was displayed.\x1b[m");
+    println!("token buffer -> {:?}", token_buffer);
+    // println!("llvmir -> {:?}", llvmir::main());
 }
 
 #[test]

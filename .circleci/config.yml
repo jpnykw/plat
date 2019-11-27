@@ -7,11 +7,8 @@ jobs:
     steps:
       - checkout
 
-        #- run:
-        # name: Install LLVM-7
-        # command: brew install llvm@7 && export PATH="/usr/local/opt/llvm@7/bin:$PATH"
       - run:
-          name: Install LLVM
+          name: Install llvm
           command: sudo apt-get install llvm
 
       - run:
