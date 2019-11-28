@@ -21,5 +21,7 @@ Emojis are a prefix following my [rules](https://gist.github.com/JPNYKW/a6941dea
 | ⚔️ | Finished Task in issue |
 | 🐛 | Fixed Bugs |
 | 🎨 | UI/UX Design |
+| ♻️ | Refactoring |
 | 🚧 | Test |
 | 🗑️ | Removed |
+
