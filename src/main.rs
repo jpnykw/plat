@@ -29,13 +29,27 @@ fn main() {
         }
     }
 
-    println!();
-    println!("\x1b[31mAll token was displayed.\x1b[m");
-    // println!("\nTokens Buffer -> {:?}", token_buffer);
-    // println!("llvmir -> {:?}", llvmir::main());
+    println!("\n\x1b[31mAll token was displayed.\x1b[m\n");
 
-    // let ast = ast::get();
-    // println!("\nExprAST -> {:#?}", ast);
+    let mut root: ast::ExprAST  = ast::new(0);
+    for token in token_buffer {
+        if token[0] != -6 {
+            // Ignore comment token (-6)
+            let text = match token[0] {
+                -1 => "Called method `if()`",
+                -2 => "Called method `for()`",
+                -3 => "Created `function`",
+                -4 => "Called method `print()`",
+                -5 => "Created primitive `string`",
+                -6 => "Created primitive `number`",
+                _ => ""
+            };
+
+            if text != "" {
+                println!("{0:<03}: {1}", token[1], text);
+            }
+        }
+    }
 }
 
 #[test]
@@ -65,19 +79,19 @@ fn token_print() {
 #[test]
 fn i_token_string() {
     let res = lexer::get(&String::from("\"hoge\""), 0);
-    assert_eq!(-4, res[0]);
+    assert_eq!(-5, res[0]);
 }
 
 #[test]
 fn i_token_number() {
     let res = lexer::get(&String::from("10\n"), 0);
-    assert_eq!(-5, res[0]);
+    assert_eq!(-6, res[0]);
 }
 
 #[test]
 fn i_token_comment() {
     let res = lexer::get(&String::from("# hoge\n"), 0);
-    assert_eq!(-6, res[0]);
+    assert_eq!(-7, res[0]);
 }
 
 #[test]

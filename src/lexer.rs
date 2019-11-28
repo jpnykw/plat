@@ -20,10 +20,10 @@ const TOKEN: Token = Token {
     _print: -4,
 
     // primary
-    _string: -4,
-    _number: -5,
-    _comment: -6,
-    _identifier: -7
+    _string: -5,
+    _number: -6,
+    _comment: -7,
+    _identifier: -8
 };
 
 pub fn get (
