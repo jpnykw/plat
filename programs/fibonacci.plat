@@ -1,5 +1,4 @@
 # This is my original language "plat"
-
 fun fib(depth)
     if depth < 3 then
         1

@@ -16,11 +16,17 @@ impl ExprAST {
             node_right: None
         }
     }
+
+    fn insert(&mut self,  token: i64) {
+        let node = Self::new(token);
+        self.node_left = Some(Box::new(node));
+    }
 }
 
 pub fn get() -> ExprAST {
-        let root = ExprAST::new(0);
-    // println!("{:#?}", root);
+    let mut root = ExprAST::new(0);
+    root.insert(-7);
+
     root
 }
 
