@@ -12,12 +12,14 @@ pub struct Token {
     _identifier: i64
 }
 
-const TOKEN: Token = Token{
+const TOKEN: Token = Token {
+    // method
     _if: -1,
     _for: -2,
     _fun: -3,
     _print: -4,
 
+    // primary
     _string: -4,
     _number: -5,
     _comment: -6,
@@ -55,12 +57,12 @@ pub fn get (
                 index += 1;
             }
 
-            println!("\x1b[36mType::method:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
+            println!("\x1b[36mType::Method:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
             if identifier_str == "if".to_string() { return [TOKEN._if, index as i64]; }
             if identifier_str == "for".to_string() { return [TOKEN._for, index as i64]; }
             if identifier_str == "fun".to_string() { return [TOKEN._fun, index as i64]; }
             if identifier_str == "print".to_string() { return [TOKEN._print, index as i64]; }
-            return [1, index as i64];
+            return [TOKEN._identifier, index as i64];
         }
     }
 
@@ -73,21 +75,16 @@ pub fn get (
         };
         // Found
         if res == "Ok" {
+            identifier_str = '"'.to_string();
             loop {
-                let text = &code.chars().nth(index).expect("aailed to unwrap chars (at Number)").to_string();
-                let reg = Regex::new(r#"""#).expect("Failed to create REGEX");
-                let res = match reg.captures(&text.to_string()) {
-                    Some(_) => "Ok",
-                    None => "_"
-                };
-
-                if res == "_" { break; }
-                identifier_str += &text.to_string();
                 index += 1;
+                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Number)");
+                identifier_str += &text.to_string();
+                if text == &'"' { break; }
             }
 
             println!("\x1b[36mType::Primitive String:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
-            return [TOKEN._string, index as i64];
+            return [TOKEN._string, (index + 1) as i64];
         }
     }
 
@@ -101,7 +98,7 @@ pub fn get (
         // Found
         if res == "Ok" {
             loop {
-                let text = &code.chars().nth(index).expect("aailed to unwrap chars (at Number)").to_string();
+                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Number)").to_string();
                 let reg = Regex::new(r"(\.)?\d+").expect("Failed to create REGEX");
                 let res = match reg.captures(&text.to_string()) {
                     Some(_) => "Ok",
@@ -141,6 +138,6 @@ pub fn get (
 
     // Operators and Others
     println!("\x1b[36mType::Unknown:\x1b[m \x1b[32m{}\x1b[m", code.chars().nth(index).expect("Failed to unwrap chars (at Unknown)"));
-    [1, (index + 1) as i64]
+    [code.chars().nth(index).expect("Failed to unwrap at convert to ASCII-Code").to_string().as_bytes()[0] as i64, (index + 1) as i64]
 }
 

@@ -31,12 +31,11 @@ fn main() {
 
     println!();
     println!("\x1b[31mAll token was displayed.\x1b[m");
-    println!("\nTokens Buffer -> {:?}", token_buffer);
+    // println!("\nTokens Buffer -> {:?}", token_buffer);
     // println!("llvmir -> {:?}", llvmir::main());
 
-    // test
-    let ast = ast::get();
-    println!("\nExprAST -> {:#?}", ast);
+    // let ast = ast::get();
+    // println!("\nExprAST -> {:#?}", ast);
 }
 
 #[test]
@@ -79,5 +78,11 @@ fn i_token_number() {
 fn i_token_comment() {
     let res = lexer::get(&String::from("# hoge\n"), 0);
     assert_eq!(-6, res[0]);
+}
+
+#[test]
+fn i_token_identifier() {
+    let res = lexer::get(&String::from("+\n"), 0);
+    assert_eq!(43, res[0]);
 }
 
