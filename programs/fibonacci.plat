@@ -4,8 +4,9 @@ fun fib(depth)
     if depth < 3 then
         1
     else
-        fib(depth-1)+fib(depth-2)
+        fib(depth - 1) + fib(depth - 2)
 
 # Calculate 40th fibonacci number
 print("fibonacci[40] is")
 print(fib(40))
+

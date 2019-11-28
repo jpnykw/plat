@@ -31,12 +31,12 @@ fn main() {
 
     println!();
     println!("\x1b[31mAll token was displayed.\x1b[m");
-    println!("\ntoken buffer -> {:?}", token_buffer);
+    println!("\nTokens Buffer -> {:?}", token_buffer);
     // println!("llvmir -> {:?}", llvmir::main());
 
     // test
     let ast = ast::get();
-    println!("\nast -> {:#?}", ast);
+    println!("\nExprAST -> {:#?}", ast);
 }
 
 #[test]
