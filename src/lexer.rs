@@ -37,20 +37,20 @@ pub fn get (
     {
         let reg = Regex::new(r"[a-zA-Z]+").expect("Failed to create REGEX");
         let res = match reg.captures(last_str) {
-            Some(_) => "Ok".to_string(),
-            None => "_".to_string(),
+            Some(_) => "Ok",
+            None => "_"
         };
         // Found
-        if res == "Ok".to_string() {
+        if res == "Ok" {
             loop {
                 let text = &code.chars().nth(index).expect("Failed to unwrap chars (at method)").to_string();
                 let reg = Regex::new(r"(\d|[a-zA-Z])+").expect("Failed to create REGEX");
                 let res = match reg.captures(text) {
-                    Some(_) => "Ok".to_string(),
-                    None => "_".to_string()
+                    Some(_) => "Ok",
+                    None => "_"
                 };
 
-                if res == "_".to_string() { break; }
+                if res == "_" { break; }
                 identifier_str += text;
                 index += 1;
             }
@@ -68,20 +68,20 @@ pub fn get (
     {
         let reg = Regex::new(r#"""#).expect("Failed to create REGEX");
         let res = match reg.captures(last_str) {
-            Some(_) => "Ok".to_string(),
-            None => "_".to_string(),
+            Some(_) => "Ok",
+            None => "_",
         };
         // Found
-        if res == "Ok".to_string() {
+        if res == "Ok" {
             loop {
                 let text = &code.chars().nth(index).expect("aailed to unwrap chars (at Number)").to_string();
                 let reg = Regex::new(r#"""#).expect("Failed to create REGEX");
                 let res = match reg.captures(&text.to_string()) {
-                    Some(_) => "Ok".to_string(),
-                    None => "_".to_string()
+                    Some(_) => "Ok",
+                    None => "_"
                 };
 
-                if res == "_".to_string() { break; }
+                if res == "_" { break; }
                 identifier_str += &text.to_string();
                 index += 1;
             }
@@ -95,20 +95,20 @@ pub fn get (
     {
         let reg = Regex::new(r"(\.)?\d+").expect("Failed to create REGEX");
         let res = match reg.captures(last_str) {
-            Some(_) => "Ok".to_string(),
-            None => "_".to_string(),
+            Some(_) => "Ok",
+            None => "_",
         };
         // Found
-        if res == "Ok".to_string() {
+        if res == "Ok" {
             loop {
                 let text = &code.chars().nth(index).expect("aailed to unwrap chars (at Number)").to_string();
                 let reg = Regex::new(r"(\.)?\d+").expect("Failed to create REGEX");
                 let res = match reg.captures(&text.to_string()) {
-                    Some(_) => "Ok".to_string(),
-                    None => "_".to_string()
+                    Some(_) => "Ok",
+                    None => "_"
                 };
 
-                if res == "_".to_string() { break; }
+                if res == "_" { break; }
                 identifier_str += &text.to_string();
                 index += 1;
             }
@@ -122,8 +122,8 @@ pub fn get (
     {
         let reg = Regex::new(r"#").expect("Failed to create REGEX");
         let res = match reg.captures(last_str) {
-            Some(_) => "Ok".to_string(),
-            None => "_".to_string(),
+            Some(_) => "Ok",
+            None => "_",
         };
         // Found
         if res == "Ok".to_string() {
