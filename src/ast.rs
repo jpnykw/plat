@@ -30,3 +30,6 @@ pub fn get() -> ExprAST {
     root
 }
 
+pub fn new(token: i64) -> ExprAST {
+    ExprAST::new(token)
+}
