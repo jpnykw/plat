@@ -1,0 +1,23 @@
+fun fizzbuzz(n)
+    let str = if n % 3 == 0 then
+        "Fizz"
+    else
+        ""
+
+    str += if n%5 == 0 then
+        "Buzz"
+    else
+        ""
+
+    str += if str == "" then
+        n
+    else
+        str
+
+# Begin count
+let i = 1
+loop
+    print(fizzbuzz(i))
+    if i > 99 then
+        break
+
