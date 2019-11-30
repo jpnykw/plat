@@ -59,41 +59,52 @@ fn token_if() {
 }
 
 #[test]
+fn token_then() {
+    let res = lexer::get(&String::from("then\n"), 0);
+    assert_eq!(-2, res[0]);
+}
+
+#[test]
+fn token_else() {
+    let res = lexer::get(&String::from("else\n"), 0);
+    assert_eq!(-3, res[0]);
+}
+
+#[test]
 fn token_for() {
     let res = lexer::get(&String::from("for i<1"), 0);
-    assert_eq!(-2, res[0]);
+    assert_eq!(-4, res[0]);
 }
 
 #[test]
 fn token_fun() {
     let res = lexer::get(&String::from("fun hoge"), 0);
-    assert_eq!(-3, res[0]);
+    assert_eq!(-5, res[0]);
 }
 
 #[test]
 fn token_print() {
     let res = lexer::get(&String::from("print()"), 0);
-    assert_eq!(-4, res[0]);
+    assert_eq!(-6, res[0]);
 }
 
 #[test]
 fn i_token_string() {
     let res = lexer::get(&String::from("\"hoge\""), 0);
-    assert_eq!(-5, res[0]);
+    assert_eq!(-7, res[0]);
 }
 
 #[test]
 fn i_token_number() {
     let res = lexer::get(&String::from("10\n"), 0);
-    assert_eq!(-6, res[0]);
+    assert_eq!(-8, res[0]);
 }
 
 #[test]
 fn i_token_comment() {
     let res = lexer::get(&String::from("# hoge\n"), 0);
-    assert_eq!(-7, res[0]);
+    assert_eq!(-9, res[0]);
 }
-
 #[test]
 fn i_token_identifier() {
     let res = lexer::get(&String::from("+\n"), 0);

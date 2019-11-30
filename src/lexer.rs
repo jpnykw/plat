@@ -2,6 +2,9 @@ use regex::Regex;
 
 pub struct Token {
     _if: i64,
+    _then: i64,
+    _else: i64,
+
     _for: i64,
     _fun: i64,
     _print: i64,
@@ -15,15 +18,18 @@ pub struct Token {
 const TOKEN: Token = Token {
     // method
     _if: -1,
-    _for: -2,
-    _fun: -3,
-    _print: -4,
+    _then: -2,
+    _else: -3,
+
+    _for: -4,
+    _fun: -5,
+    _print: -6,
 
     // primary
-    _string: -5,
-    _number: -6,
-    _comment: -7,
-    _identifier: -8
+    _string: -7,
+    _number: -8,
+    _comment: -9,
+    _identifier: -10
 };
 
 pub fn get (
@@ -59,6 +65,8 @@ pub fn get (
 
             println!("\x1b[36mType::Method:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
             if identifier_str == "if".to_string() { return [TOKEN._if, index as i64]; }
+            if identifier_str == "then".to_string() { return [TOKEN._then, index as i64]; }
+            if identifier_str == "else".to_string() { return [TOKEN._else, index as i64]; }
             if identifier_str == "for".to_string() { return [TOKEN._for, index as i64]; }
             if identifier_str == "fun".to_string() { return [TOKEN._fun, index as i64]; }
             if identifier_str == "print".to_string() { return [TOKEN._print, index as i64]; }
