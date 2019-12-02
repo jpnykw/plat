@@ -23,7 +23,6 @@ impl ExprAST {
         self.node_left = Some(Box::new(node));
 
         self.llvm_ir = String::from(match token {
-            -1 => "define double @baz(double %x) {\n}",
             _ => "# None"
         });
     }
