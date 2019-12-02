@@ -36,12 +36,14 @@ fn main() {
             // Ignore comment token (-6)
             let text = match token[0] {
                 -1 => "Called method `if()`",
-                -2 => "Called method `for()`",
-                -3 => "Created `function`",
-                -4 => "Called method `print()`",
-                -5 => "Created primitive `string`",
-                -6 => "Created primitive `number`",
-                _ => ""
+                -2 => "Called method `then`",
+                -3 => "Called method `else`",
+                -4 => "Called method `for()`",
+                -5 => "Created `function`",
+                -6 => "Called method `print()`",
+                -7 => "Created primitive `string`",
+                -8 => "Created primitive `number`",
+                _ => "Found unknown token"
             };
 
             if text != "" {
