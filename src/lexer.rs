@@ -1,21 +1,21 @@
 use regex::Regex;
 
 pub struct Token {
-    _if: i64,
-    _then: i64,
-    _else: i64,
+    pub _if: i64,
+    pub _then: i64,
+    pub _else: i64,
 
-    _for: i64,
-    _fun: i64,
-    _print: i64,
+    pub _for: i64,
+    pub _fun: i64,
+    pub _print: i64,
 
-    _string: i64,
-    _number: i64,
-    _comment: i64,
-    _identifier: i64
+    pub _string: i64,
+    pub _number: i64,
+    pub _comment: i64,
+    pub _identifier: i64
 }
 
-const TOKEN: Token = Token {
+pub static TOKEN: Token = Token {
     // method
     _if: -1,
     _then: -2,
