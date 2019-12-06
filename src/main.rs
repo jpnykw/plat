@@ -1,8 +1,10 @@
 extern crate regex;
 
-use std::env;
-use std::fs::File;
+use inkwell::context::Context;
+use std::error::Error;
 use std::io::prelude::*;
+use std::fs::File;
+use std::env;
 
 mod ast;
 mod lexer;
@@ -12,18 +14,29 @@ fn main() {
     let mut file = File::open(&args[1]).unwrap();
     let mut code = String::new();
     file.read_to_string(&mut code).unwrap();
+
+    println!("\n\x1b[31mShow input file.\x1b[m\n");
+    println!("\x1b[35m  {}\x1b[m", code);
     code = format!("{}\n", code).to_string();
+
+    // for generate LLVM IR
+    let context = Context::create();
+    let module = context.create_module("main");
+    let builder = context.create_builder();
+    let i32_type = context.i32_type();
+
+    println!("\x1b[31mExpand tokens.\x1b[m\n");
 
     let mut token_buffer: Vec<[i64; 2]> = Vec::with_capacity(255);
     let mut index: usize = 0;
     loop {
         let token = lexer::get(&code, index);
-        println!("  -> token: {}, index: {}", token[0], token[1]);
         index = token[1] as usize;
 
         if index >= code.len() {
             break;
         } else {
+            println!("    \x1b[35m-> token: {}, index: {}\x1b[m", token[0], token[1]);
             token_buffer.push(token);
         }
     }
@@ -47,10 +60,42 @@ fn main() {
             };
 
             if text != "" {
-                println!("{0:<03}: {1}", token[1], text);
+                println!("  \x1b[35m{0:<03}: {1}\x1b[m", token[1], text);
             }
         }
     }
+
+    println!("\n\x1b[31mGenerated LLVM IR.\x1b[m\n");
+
+    // Test llvm ir
+    let context = Context::create();
+    let module = context.create_module("main");
+    let builder = context.create_builder();
+    let i32_type = context.i32_type();
+
+    let putchar_type = i32_type.fn_type(&[i32_type.into()], false);
+    module.add_function("putchar", putchar_type, None);
+
+    let main_type = i32_type.fn_type(&[], false);
+    let function = module.add_function("main", main_type, None);
+    let basic_block = context.append_basic_block(function, "entry");
+    builder.position_at_end(&basic_block);
+
+    let fun = module.get_function("putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(72, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(101, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(108, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(108, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(111, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(32, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(87, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(111, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(114, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(108, false).into()], "putchar");
+    builder.build_call(fun.unwrap(), &[i32_type.const_int(100, false).into()], "putchar");
+
+    builder.build_return(Some(&i32_type.const_int(0, false)));
+    module.print_to_stderr();
 }
 
 #[test]

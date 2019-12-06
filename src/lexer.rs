@@ -63,7 +63,7 @@ pub fn get (
                 index += 1;
             }
 
-            println!("\x1b[36mType::Method:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
+            println!("  \x1b[35mType::Method::{}\x1b[m", identifier_str);
             if identifier_str == "if".to_string() { return [TOKEN._if, index as i64]; }
             if identifier_str == "then".to_string() { return [TOKEN._then, index as i64]; }
             if identifier_str == "else".to_string() { return [TOKEN._else, index as i64]; }
@@ -91,7 +91,7 @@ pub fn get (
                 if text == &'"' { break; }
             }
 
-            println!("\x1b[36mType::Primitive String:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
+            println!("  \x1b[35mType::String::{}\x1b[m", identifier_str);
             return [TOKEN._string, (index + 1) as i64];
         }
     }
@@ -118,7 +118,7 @@ pub fn get (
                 index += 1;
             }
 
-            println!("\x1b[36mType::Primitive Number:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
+            println!("  \x1b[35mType::Number::{}\x1b[m", identifier_str);
             return [TOKEN._number, index as i64];
         }
     }
@@ -139,13 +139,13 @@ pub fn get (
                 index += 1;
             }
 
-            println!("\x1b[36mType::Comments:\x1b[m \x1b[32m{}\x1b[m", identifier_str);
+            println!("  \x1b[35mType::Comment::{}\x1b[m", identifier_str);
             return [TOKEN._comment, index as i64];
         }
     }
 
     // Operators and Others
-    println!("\x1b[36mType::Unknown:\x1b[m \x1b[32m{}\x1b[m", code.chars().nth(index).expect("Failed to unwrap chars (at Unknown)"));
+    println!("  \x1b[35mType::Unknown::{}\x1b[m", code.chars().nth(index).expect("Failed to unwrap chars (at Unknown)"));
     [code.chars().nth(index).expect("Failed to unwrap at convert to ASCII-Code").to_string().as_bytes()[0] as i64, (index + 1) as i64]
 }
 
