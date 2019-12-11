@@ -1,3 +1,6 @@
 .DS_Store
 /target
 *.swp
+*.swo
+*.swn
+*.swm
