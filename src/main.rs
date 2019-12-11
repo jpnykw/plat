@@ -1,7 +1,6 @@
 extern crate regex;
 
 use inkwell::context::Context;
-use std::error::Error;
 use std::io::prelude::*;
 use std::fs::File;
 use std::env;
@@ -15,8 +14,8 @@ fn main() {
     let mut code = String::new();
     file.read_to_string(&mut code).unwrap();
 
-    println!("\n\x1b[31mShow input file.\x1b[m\n");
-    println!("\x1b[35m  {}\x1b[m", code);
+    println!("\n\x1b[32mInput ----->\x1b[m");
+    println!("{}", code);
     code = format!("{}\n", code).to_string();
 
     // for generate LLVM IR
@@ -25,7 +24,7 @@ fn main() {
     let builder = context.create_builder();
     let i32_type = context.i32_type();
 
-    println!("\x1b[31mExpand tokens.\x1b[m\n");
+    println!("\x1b[32mTokens ----->\x1b[m");
 
     let mut token_buffer: Vec<[i64; 2]> = Vec::with_capacity(255);
     let mut index: usize = 0;
@@ -36,12 +35,14 @@ fn main() {
         if index >= code.len() {
             break;
         } else {
-            println!("    \x1b[35m-> token: {}, index: {}\x1b[m", token[0], token[1]);
+            println!("  token: {}", token[0]);
+            println!("  index: {}", token[1]);
+            println!();
             token_buffer.push(token);
         }
     }
 
-    println!("\n\x1b[31mAll token was displayed.\x1b[m\n");
+    println!("\x1b[32mLatent Semantic Analysis ----->\x1b[m");
 
     let _root: ast::ExprAST  = ast::new(0);
     for token in token_buffer {
@@ -60,19 +61,14 @@ fn main() {
             };
 
             if text != "" {
-                println!("  \x1b[35m{0:<03}: {1}\x1b[m", token[1], text);
+                println!("{0:<03}: {1}", token[1], text);
             }
         }
     }
 
-    println!("\n\x1b[31mGenerated LLVM IR.\x1b[m\n");
+    println!("\n\x1b[32mGenerate LLVM IR (test) ----->\x1b[m");
 
     // Test llvm ir
-    let context = Context::create();
-    let module = context.create_module("main");
-    let builder = context.create_builder();
-    let i32_type = context.i32_type();
-
     let putchar_type = i32_type.fn_type(&[i32_type.into()], false);
     module.add_function("putchar", putchar_type, None);
 
@@ -82,20 +78,18 @@ fn main() {
     builder.position_at_end(&basic_block);
 
     let fun = module.get_function("putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(72, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(101, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(108, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(108, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(111, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(32, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(87, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(111, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(114, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(108, false).into()], "putchar");
-    builder.build_call(fun.unwrap(), &[i32_type.const_int(100, false).into()], "putchar");
+    let text = "Hello World!!!\n";
+    for c in text.chars() {
+        let ascii = c.to_string().as_bytes()[0] as u64;
+        builder.build_call(fun.unwrap(), &[i32_type.const_int(ascii, false).into()], "putchar");
+    }
 
     builder.build_return(Some(&i32_type.const_int(0, false)));
     module.print_to_stderr();
+
+    let meta = module.get_global_metadata("main");
+    println!("\n\x1b[31mGlobal meta deta.\x1b[m\n");
+    println!("{:#?}", meta);
 }
 
 #[test]
@@ -151,6 +145,7 @@ fn i_token_comment() {
     let res = lexer::get(&String::from("# hoge\n"), 0);
     assert_eq!(lexer::TOKEN._comment, res[0]);
 }
+
 #[test]
 fn i_token_identifier() {
     let res = lexer::get(&String::from("+\n"), 0);
