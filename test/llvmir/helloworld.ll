@@ -16,6 +16,7 @@ entry:
     %putchar8 = call i32 @putchar(i32 114)
     %putchar9 = call i32 @putchar(i32 108)
     %putchar10 = call i32 @putchar(i32 100)
-    %putchar11 = call i32 @putchar(i32 10)
+    %putchar11 = call i32 @putchar(i32 33)
+    %putchar12 = call i32 @putchar(i32 10)
     ret i32 0
 }

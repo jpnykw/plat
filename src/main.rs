@@ -77,8 +77,9 @@ fn main() {
     let basic_block = context.append_basic_block(function, "entry");
     builder.position_at_end(&basic_block);
 
+    // Print any text as llvm ir
     let fun = module.get_function("putchar");
-    let text = "Hello World!!!\n";
+    let text = "Hello World!\n";
     for c in text.chars() {
         let ascii = c.to_string().as_bytes()[0] as u64;
         builder.build_call(fun.unwrap(), &[i32_type.const_int(ascii, false).into()], "putchar");
