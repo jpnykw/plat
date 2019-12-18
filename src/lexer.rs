@@ -44,103 +44,99 @@ pub fn get (
     // Method (hit String)
     {
         let reg = Regex::new(r"[a-zA-Z]+").expect("Failed to create REGEX");
-        let res = match reg.captures(last_str) {
-            Some(_) => "Ok",
-            None => "_"
+        match reg.captures(last_str) {
+            Some(_) => {
+                loop {
+                    let text = &code.chars().nth(index).expect("Failed to unwrap chars (at method)").to_string();
+                    let reg = Regex::new(r"(\d|[a-zA-Z])+").expect("Failed to create REGEX");
+                    let res = match reg.captures(text) {
+                        Some(_) => "Ok",
+                        None => "_"
+                    };
+
+                    if res == "_" { break; }
+                    identifier_str += text;
+                    index += 1;
+                }
+
+                println!("Type::Method \x1b[33m{}\x1b[m", identifier_str);
+                if identifier_str == "if".to_string() { return [TOKEN._if, index as i64]; }
+                if identifier_str == "then".to_string() { return [TOKEN._then, index as i64]; }
+                if identifier_str == "else".to_string() { return [TOKEN._else, index as i64]; }
+                if identifier_str == "for".to_string() { return [TOKEN._for, index as i64]; }
+                if identifier_str == "fun".to_string() { return [TOKEN._fun, index as i64]; }
+                if identifier_str == "print".to_string() { return [TOKEN._print, index as i64]; }
+                return [TOKEN._identifier, index as i64];
+            },
+
+            None => { }
         };
-        // Found
-        if res == "Ok" {
-            loop {
-                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at method)").to_string();
-                let reg = Regex::new(r"(\d|[a-zA-Z])+").expect("Failed to create REGEX");
-                let res = match reg.captures(text) {
-                    Some(_) => "Ok",
-                    None => "_"
-                };
-
-                if res == "_" { break; }
-                identifier_str += text;
-                index += 1;
-            }
-
-            println!("Type::Method \x1b[33m{}\x1b[m", identifier_str);
-            if identifier_str == "if".to_string() { return [TOKEN._if, index as i64]; }
-            if identifier_str == "then".to_string() { return [TOKEN._then, index as i64]; }
-            if identifier_str == "else".to_string() { return [TOKEN._else, index as i64]; }
-            if identifier_str == "for".to_string() { return [TOKEN._for, index as i64]; }
-            if identifier_str == "fun".to_string() { return [TOKEN._fun, index as i64]; }
-            if identifier_str == "print".to_string() { return [TOKEN._print, index as i64]; }
-            return [TOKEN._identifier, index as i64];
-        }
     }
 
     // String (hit Quote)
     {
         let reg = Regex::new(r#"""#).expect("Failed to create REGEX");
-        let res = match reg.captures(last_str) {
-            Some(_) => "Ok",
-            None => "_",
-        };
-        // Found
-        if res == "Ok" {
-            identifier_str = '"'.to_string();
-            loop {
-                index += 1;
-                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Number)");
-                identifier_str += &text.to_string();
-                if text == &'"' { break; }
-            }
+        match reg.captures(last_str) {
+            Some(_) => {
+                identifier_str = '"'.to_string();
+                loop {
+                    index += 1;
+                    let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Number)");
+                    identifier_str += &text.to_string();
+                    if text == &'"' { break; }
+                }
 
-            println!("Type::String \x1b[33m{}\x1b[m", identifier_str);
-            return [TOKEN._string, (index + 1) as i64];
-        }
+                println!("Type::String \x1b[33m{}\x1b[m", identifier_str);
+                return [TOKEN._string, (index + 1) as i64];
+            },
+
+            None => { }
+        };
     }
 
     // Number (hit Number)
     {
         let reg = Regex::new(r"(\.)?\d+").expect("Failed to create REGEX");
-        let res = match reg.captures(last_str) {
-            Some(_) => "Ok",
-            None => "_",
-        };
-        // Found
-        if res == "Ok" {
-            loop {
-                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Number)").to_string();
-                let reg = Regex::new(r"(\.)?\d+").expect("Failed to create REGEX");
-                let res = match reg.captures(&text.to_string()) {
-                    Some(_) => "Ok",
-                    None => "_"
-                };
+        match reg.captures(last_str) {
+            Some(_) => {
+                loop {
+                    let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Number)").to_string();
+                    let reg = Regex::new(r"(\.)?\d+").expect("Failed to create REGEX");
+                    let res = match reg.captures(&text.to_string()) {
+                        Some(_) => "Ok",
+                        None => "_"
+                    };
 
-                if res == "_" { break; }
-                identifier_str += &text.to_string();
-                index += 1;
-            }
+                    if res == "_" { break; }
+                    identifier_str += &text.to_string();
+                    index += 1;
+                }
 
-            println!("Type::Number \x1b[33m{}\x1b[m", identifier_str);
-            return [TOKEN._number, index as i64];
+                println!("Type::Number \x1b[33m{}\x1b[m", identifier_str);
+                return [TOKEN._number, index as i64];
+            },
+
+            None => { }
         }
     }
 
     // Comments (hit String)
     {
         let reg = Regex::new(r"#").expect("Failed to create REGEX");
-        let res = match reg.captures(last_str) {
-            Some(_) => "Ok",
-            None => "_",
-        };
-        // Found
-        if res == "Ok".to_string() {
-            loop {
-                let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Comments)");
-                if text == &'\n' { break; }
-                identifier_str += &text.to_string();
-                index += 1;
-            }
+        match reg.captures(last_str) {
+            Some(_) => {
+                loop {
+                    let text = &code.chars().nth(index).expect("Failed to unwrap chars (at Comments)");
+                    if text == &'\n' { break; }
+                    identifier_str += &text.to_string();
+                    index += 1;
+                }
 
-            println!("Type::Comment \x1b[33m{}\x1b[m", identifier_str);
-            return [TOKEN._comment, index as i64];
+                println!("Type::Comment \x1b[33m{}\x1b[m", identifier_str);
+                return [TOKEN._comment, index as i64];
+            },
+
+            None => { }
         }
     }
 
