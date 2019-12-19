@@ -14,7 +14,7 @@ impl ExprAST {
         }
     }
 
-    fn _insert(&mut self,  token: i64) {
+    pub fn insert(&mut self,  token: i64) {
         let node = Self::new(token);
         self.node.push(Some(Box::new(node)));
     }

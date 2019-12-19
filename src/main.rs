@@ -44,10 +44,12 @@ fn main() {
 
     println!("\x1b[32mLatent Semantic Analysis ----->\x1b[m");
 
-    let _root: ast::ExprAST  = ast::new(0);
+    let mut root: ast::ExprAST  = ast::new(0);
     for token in token_buffer {
         if token[0] != -6 {
             // Ignore comment token (-6)
+
+            /*
             let text = match token[0] {
                 -1 => "Called method `if()`",
                 -2 => "Called method `then`",
@@ -63,8 +65,15 @@ fn main() {
             if text != "" {
                 println!("{0:<03}: {1}", token[1], text);
             }
+            */
+
+            // insert to most-high scope
+            root.insert(token[0]);
         }
     }
+
+    println!("\n\x1b[32mGenerate AST (test) ----->\x1b[m");
+    println!("{:#?}", root);
 
     println!("\n\x1b[32mGenerate LLVM IR (test) ----->\x1b[m");
 
