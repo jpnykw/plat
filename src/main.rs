@@ -44,36 +44,39 @@ fn main() {
 
     println!("\x1b[32mLatent Semantic Analysis ----->\x1b[m");
 
-    let mut root: ast::ExprAST  = ast::new(0);
+    // let mut scope: usize = 0; // depth
+    let mut target: usize = 0; // index
+
+    let mut root: ast::Root  = ast::new(0);
     for token in token_buffer {
-        if token[0] != -6 {
-            // Ignore comment token (-6)
-
-            /*
-            let text = match token[0] {
-                -1 => "Called method `if()`",
-                -2 => "Called method `then`",
-                -3 => "Called method `else`",
-                -4 => "Called method `for()`",
-                -5 => "Created `function`",
-                -6 => "Called method `print()`",
-                -7 => "Created primitive `string`",
-                -8 => "Created primitive `number`",
-                _ => "Found unknown token"
-            };
-
-            if text != "" {
-                println!("{0:<03}: {1}", token[1], text);
-            }
-            */
-
+        if token[0] != lexer::TOKEN._comment {
             // insert to most-high scope
-            root.insert(token[0]);
+            // root.insert(token[0]);
+
+            match token[0] {
+                -6 => {
+                    root.insert(lexer::TOKEN._print, 0);
+                    // println!("print --> \n {} --> \n {:#?}", root.node.len(), root.node[0]);
+                    target = root.node.len() - 1;
+                },
+
+                -7 => {
+                    // How should I insert node ...
+                    println!("{:#?}", root.node[target].as_ref().unwrap()[0]);
+                    // root.node[target].as_ref().unwrap().insert(lexer::TOKEN._string as usize, 0);
+                    // let node = root.node[target].as_ref().unwrap();
+                    // println!("{:#?}", node.token);
+                    // root.node[target].as_ref().unwrap().insert(lexer::TOKEN._string);
+                    // node.insert(lexer::TOKEN._string);
+                },
+
+                _ => { }
+            };
         }
     }
 
-    println!("\n\x1b[32mGenerate AST (test) ----->\x1b[m");
-    println!("{:#?}", root);
+    // println!("\n\x1b[32mGenerate AST (test) ----->\x1b[m");
+    // println!("{:?}", root);
 
     println!("\n\x1b[32mGenerate LLVM IR (test) ----->\x1b[m");
 
