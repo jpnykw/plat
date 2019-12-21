@@ -62,7 +62,16 @@ fn main() {
 
                 -7 => {
                     // How should I insert node ...
-                    println!("{:#?}", root.node[target].as_ref().unwrap()[0]);
+                    match &root.node[target] {
+                        ast::Types::Exp(val) => {
+                            println!("{:#?}", val);
+                            // println!("token -> {:#?}", val.token);
+                            val.insert(lexer::TOKEN._string);
+                        },
+
+                        _ => {}
+                    }
+
                     // root.node[target].as_ref().unwrap().insert(lexer::TOKEN._string as usize, 0);
                     // let node = root.node[target].as_ref().unwrap();
                     // println!("{:#?}", node.token);

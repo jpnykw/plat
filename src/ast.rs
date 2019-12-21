@@ -9,22 +9,19 @@ pub enum Types {
 #[derive(Debug)]
 pub struct Root {
     pub token: i64,
-    // pub node: Vec<Option<Box<Types>>>
-    pub node: Vec<Option<Vec<Types>>>
+    pub node: Vec<Types>
 }
 
 #[derive(Debug)]
 pub struct Expression {
     pub token: i64,
-    // pub node: Vec<Option<Box<Types>>>
-    pub node: Vec<Option<Vec<Types>>>
+    pub node: Vec<Types>
 }
 
 #[derive(Debug)]
 pub struct Statement {
     pub token: i64,
-    // pub node: Vec<Option<Box<Types>>>
-    pub node: Vec<Option<Vec<Types>>>
+    pub node: Vec<Types>
 }
 
 impl Root {
@@ -37,13 +34,13 @@ impl Root {
 
     pub fn insert(&mut self, token: i64, mode: i64) {
         if mode == 0 {
-            let node = Types::Exp(Expression::new(token));
-            // self.node.push(Some(Box::new(node)));
-            self.node.push(Some(vec![node]));
+            let node: Types = Types::Exp(Expression::new(token));
+            // self.node.push(Some(vec![node]));
+            self.node.push(node);
         } else {
-            let node = Types::Stat(Statement::new(token));
-            // self.node.push(Some(Box::new(node)));
-            self.node.push(Some(vec![node]));
+            let node: Types = Types::Stat(Statement::new(token));
+            // self.node.push(Some(vec![node]));
+            self.node.push(node);
         }
     }
 }
@@ -56,7 +53,9 @@ impl Expression {
         }
     }
 
-    pub fn insert(self, token: i64) {
+    pub fn insert(&mut self, token: i64) {
+        let node: Types = Types::Stat(Statement::new(token));
+        self.node.push(node);
     }
 }
 
@@ -68,7 +67,7 @@ impl Statement {
         }
     }
 
-    pub fn insert(self, token: i64) {
+    pub fn insert(self, _token: i64) {
     }
 }
 
