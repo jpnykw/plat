@@ -7,6 +7,7 @@ use std::env;
 
 mod ast;
 mod lexer;
+mod llvmir;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -66,7 +67,8 @@ fn main() {
                         ast::Types::Exp(val) => {
                             println!("{:#?}", val);
                             // println!("token -> {:#?}", val.token);
-                            val.insert(lexer::TOKEN._string);
+                            // val.insert(lexer::TOKEN._string);
+                            // println!("val -> {:#?}", val);
                         },
 
                         _ => {}
@@ -84,8 +86,11 @@ fn main() {
         }
     }
 
-    // println!("\n\x1b[32mGenerate AST (test) ----->\x1b[m");
-    // println!("{:?}", root);
+    println!("\n\x1b[32mGenerate AST (test) ----->\x1b[m");
+    println!("{:?}", root);
+
+    println!("\n\x1b[33mGenerate LLVM IR using AST (test) ----->\x1b[m");
+    println!("{:?}", llvmir::generate(root).expect("Failed to unwrap LLVMIR"));
 
     println!("\n\x1b[32mGenerate LLVM IR (test) ----->\x1b[m");
 
@@ -109,9 +114,9 @@ fn main() {
     builder.build_return(Some(&i32_type.const_int(0, false)));
     module.print_to_stderr();
 
-    let meta = module.get_global_metadata("main");
-    println!("\n\x1b[31mGlobal meta deta.\x1b[m\n");
-    println!("{:#?}", meta);
+    // let meta = module.get_global_metadata("main");
+    // println!("\n\x1b[31mGlobal meta deta.\x1b[m\n");
+    // println!("{:#?}", meta);
 }
 
 #[test]
