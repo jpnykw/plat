@@ -8,9 +8,9 @@ pub enum Types {
 
 #[derive(Debug)]
 pub enum ValueTypes {
+    Str(String),
     Int(i64),
     Float(f64),
-    Str(String),
 }
 
 #[derive(Debug)]

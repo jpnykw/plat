@@ -19,12 +19,6 @@ fn main() {
     println!("{}", code);
     code = format!("{}\n", code).to_string();
 
-    // for generate LLVM IR
-    let context = Context::create();
-    let module = context.create_module("main");
-    let builder = context.create_builder();
-    let i32_type = context.i32_type();
-
     println!("\x1b[32mTokens ----->\x1b[m");
 
     let mut token_buffer: Vec<[i64; 2]> = Vec::with_capacity(255);
@@ -92,27 +86,7 @@ fn main() {
     println!("\n\x1b[33mGenerate LLVM IR using AST (test) ----->\x1b[m");
     println!("{:?}", llvmir::generate(root).expect("Failed to unwrap LLVMIR"));
 
-    println!("\n\x1b[32mGenerate LLVM IR (test) ----->\x1b[m");
-
-    // Test llvm ir
-    let putchar_type = i32_type.fn_type(&[i32_type.into()], false);
-    module.add_function("putchar", putchar_type, None);
-
-    let main_type = i32_type.fn_type(&[], false);
-    let function = module.add_function("main", main_type, None);
-    let basic_block = context.append_basic_block(function, "entry");
-    builder.position_at_end(&basic_block);
-
-    // Print any text as llvm ir
-    let fun = module.get_function("putchar");
-    let text = "Hello World!\n";
-    for c in text.chars() {
-        let ascii = c.to_string().as_bytes()[0] as u64;
-        builder.build_call(fun.unwrap(), &[i32_type.const_int(ascii, false).into()], "putchar");
-    }
-
-    builder.build_return(Some(&i32_type.const_int(0, false)));
-    module.print_to_stderr();
+    // println!("\n\x1b[32mGenerate LLVM IR (test) ----->\x1b[m");
 
     // let meta = module.get_global_metadata("main");
     // println!("\n\x1b[31mGlobal meta deta.\x1b[m\n");

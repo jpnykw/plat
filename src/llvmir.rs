@@ -17,7 +17,32 @@ pub fn generate(
     let basic_block = context.append_basic_block(function, "entry");
     builder.position_at_end(&basic_block);
 
-    println!("root -> \n{:#?}", root);
+    // println!("root -> \n{:#?}", root);
+    for node in root.node {
+        // println!("node -> {:#?}", node);
+        match node {
+            ast::Types::Exp(val) => {
+                println!("Matched Type::Exp");
+
+                if val.token == -6 {
+                    let text =  match val.value {
+                        ast::ValueTypes::Str(val) => val,
+                        _ => String::new()
+                    };
+
+                    let fun = module.get_function("putchar");
+                    for c in text.chars() {
+                        let ascii = c.to_string().as_bytes()[0] as u64;
+                        builder.build_call(fun.unwrap(), &[i32_type.const_int(ascii, false).into()], "putchar");
+                    }
+                }
+            },
+            _ => println!("Unknown type matched")
+        }
+    }
+
+    builder.build_return(Some(&i32_type.const_int(0, false)));
+    module.print_to_stderr();
 
     // Any option (test)
     Some(ast::Types::Exp(ast::Expression::new(0)))
